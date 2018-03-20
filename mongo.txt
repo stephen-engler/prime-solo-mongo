@@ -1,0 +1,31 @@
+//Create a collection named orders.
+db.createCollection('orders');
+
+//Isert at least 3 documents that represent an order. IMPORTANT: See section below for fields. 
+//Order dates should be: 2017-02-03, 2017-04-04, 2017-01-02
+
+db.orders.insert({orderDate: new Date('2017-02-03'), orderTotal: 20.00, 
+lineItems: [{unitPrice: 5.00, quantity: 4, productName: 'coffee mug'}]});
+
+db.orders.insert({orderDate: new Date('2017-04-04'), orderTotal: 9.00, 
+lineItems: [{unitPrice: 3.00, quantity: 3, productName: 'water bottle'}]});
+
+db.orders.insert({orderDate: new Date('2017-01-02'), orderTotal: 12.00, 
+lineItems: [{unitPrice: 1.00, quantity: 12, productName: 'dry erase markers'}]});
+
+//Find all orders and make them look pretty.
+db.orders.find().pretty();
+
+//Find all orders with an orderDate that is after 1/31/2017.
+db.orders.find({orderDate: {$gt: ISODate("2017-01-31T00:00:00Z")}});
+
+//Change the orderTotal from 2/3/2017 to 63 dollars 
+//(you do NOT have to ensure the lineItems' unitPrice * quantity add up to the orderTotal)
+
+db.orders.update({orderDate: ISODate("2017-02-03T00:00:00Z")}, {$set: {orderTotal: 63.00}});
+
+//Stretch
+//Add another lineItem to the order from 4/4/2017 hint: $push
+db.orders.update({orderDate: ISODate("2017-04-04T00:00:00Z")}, {$push: {lineItems: {unitPrice: 4.0, quantity: 5, productName: 'sandwich'}}});
+
+//Change the first lineItem in the order from 1/2/2017 to be for 2 'transistor radio's
